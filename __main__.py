@@ -1,6 +1,11 @@
 import config_mngr as cfg
 from config_mngr import config
 
+from web import app
+
+import db_mngr as db
+
+
 
 if __name__ == "__main__":
     try:
@@ -19,3 +24,4 @@ if __name__ == "__main__":
     finally:
         cfg.save('db')
 
+    app.run(debug=True)
