@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://www.dyakov.space/styles/stylescheme.css">
+    <title>Make shortlink</title>
+</head>
+<body>
+    {% if status == 'ok' %}
+    <p class='status'>Link created</p>
+    {% elif status == 'err_already_created' %}
+    <p class='status'>Link with same name was already created</p>
+    {% endif %}
+
+    <form action="" method="POST">
+        <input type="url" 
+               placeholder="https://example.com" 
+               name="link"
+               spellcheck="false"
+               value="{% if link != None %}{{ link }}{% endif %}"
+               required>
+
+        <input type="text" 
+               placeholder="Alias" 
+               name="alias"
+               spellcheck="false"
+               value="{% if alias != None %}{{ alias }}{% endif %}">
+
+        <input type="submit" value="Short!">
+    </form>
+</body>
+</html>
