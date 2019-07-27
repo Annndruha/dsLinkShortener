@@ -1,3 +1,4 @@
+from gevent.pywsgi import WSGIServer
 from config_mngr import config, save, load
 from web import app
 
@@ -28,6 +29,7 @@ if __name__ == "__main__":
         print(err)
         exit(2)
     
-    app.run(debug=True)
+    http_server = WSGIServer(('', 80), app)
+    http_server.serve_forever()
 
     Disconnect()
