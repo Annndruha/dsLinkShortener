@@ -1,15 +1,12 @@
-import config_mngr as cfg
-from config_mngr import config
-
+from config_mngr import config, save, load
 from web import app
 
-import db_mngr as db
-
-
+from db_mngr import Connect, Disconnect, GetLink
+#from db_mngr import *
 
 if __name__ == "__main__":
     try:
-        cfg.load(path = 'config/database.json', name = 'db')
+        load(path = 'config/database.json', name = 'db')
     except FileNotFoundError as err:
         print(err)
         print('Making default config')
@@ -21,7 +18,16 @@ if __name__ == "__main__":
 						'scheme': 'public'}
     except Exception as err:
         print(err)
+        exit(1)
     finally:
-        cfg.save('db')
+        save('db')
 
+    try:
+        Connect(config['db'])
+    except Exception as err:
+        print(err)
+        exit(2)
+    
     app.run(debug=True)
+
+    Disconnect()

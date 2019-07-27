@@ -1,8 +1,9 @@
 import string
 import random
 
-from .get import Get, links
+from .get import Get
 from .errors import *
+from ..connection import Connect, Commit, GetScheme
 
 def Gen(size=6):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -25,4 +26,10 @@ def Set(link, creator_id, alias = None):
     return alias
     
 def Add(link):
-    links.append(link)
+    scheme = GetScheme()
+    cur = Connect()
+    cur.execute(f"SELECT MAX(id) FROM {scheme}.links")
+    link['id'] = int(cur.fetchone()[0])+1
+    cur.execute(f"INSERT INTO {scheme}.links (id, link, alias, creator) VALUES ({link['id']}, \'{link['link']}\', \'{link['alias']}\', {link['creator_id']})")
+    Commit()
+    cur.close()
