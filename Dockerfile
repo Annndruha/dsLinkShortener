@@ -8,15 +8,12 @@ ADD ./ /home/LinkShortener
 WORKDIR /home/LinkShortener
 
 # Addictional libraries for bot
-RUN apk add --no-cache --virtual .build-deps \
-    openssl-dev \
-    libffi-dev \
-    gcc \
-    python3-dev \
-    musl-dev \
-    postgresql-dev \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apk del --no-cache .build-deps
+RUN apk update && \
+    apk add --no-cache libpq && \
+    apk add --no-cache --virtual build-deps gcc python3-dev musl-dev libffi-dev && \
+    apk add --no-cache postgresql-dev && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk del build-deps
 
 #Specify the port number the container should expose 
 EXPOSE 80
