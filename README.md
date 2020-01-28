@@ -1,7 +1,7 @@
 # Link shortener
 Простое приложение на Python, которое позволяет сокращать ссылки на своём домене. 
 
-## Использование
+### Настройка конфигирационного файла
 Для работы сервиса требуется база данных и СУБД PostgreSQL. Конфигурационный файл базы данных сравниться в папке `config/database.json` и имеет следующий формат:
 
     {
@@ -13,6 +13,7 @@
         'scheme': 'public'
     }
 
+### Настройка базы данных
 В схеме базы данных, в которой будет работать ваш сокращатель ссылок, необходимо предварительно создать таблицы users и links:
 
     CREATE TABLE linkshortener.users (
@@ -33,16 +34,17 @@
         CONSTRAINT links_pk PRIMARY KEY (id),
         CONSTRAINT links_fk FOREIGN KEY (creator) REFERENCES linkshortener.users(id)
     );  
-    INSERT INTO linkshortener.links (id, link, alias, creator, visits, isdeleted) 
-    VALUES(0, 'localhost', 'N/A', 0, 0, false);
-
 В таблице users создайте необходимое количество пользователей. Ключ access_code рекомендуется генерировать случайным образом, т.к. он является единственным средством защиты от несанкционированного доступа. 
 
     INSERT INTO linkshortener.users (id, login, access_code, isdeleted) 
-    VALUES(0, 'admin', 'AeyOS4VqwxG2v4IQpv2FKJGy');
+    VALUES(0, 'admin', 'AeyOS4VqwxG2v4IQpv2FKJGy', false);
+    
+Проерить корректность предыдущих действий можно добавив запись:
 
-Для создания ссылок перейдите на страницу `http://example.com/make/<access_code>` и введите ссылку которую нужно сократить (текст сокращённой ссылки по желанию), или сделайте POST запрос на этот адрес с параметрами `link` – ссылка, которая должна быть сокращена, и `alias` – сокращённое имя вашей ссылки (оба параметра обязательны).
+    INSERT INTO linkshortener.links (id, link, alias, creator, visits, isdeleted) 
+    VALUES(0, 'localhost', 'N/A', 0, 0, false);
 
+### Запуск
 Самый простой способ запустить сервис - ввести в консоли:
 
     git clone https://github.com/dyakovri/dsLinkShortener
@@ -55,3 +57,4 @@
     docker run -d -p 80 -v <path>/<to>/config/database.json:/home/LinkShortener/config/database.json --name linkshortener linkshortener
     
 Это запустит сокращатель ссылок на порту 80.
+Для создания ссылок перейдите на страницу `http://example.com/make/<access_code>` и введите ссылку которую нужно сократить (текст сокращённой ссылки по желанию), или сделайте POST запрос на этот адрес с параметрами `link` – ссылка, которая должна быть сокращена, и `alias` – сокращённое имя вашей ссылки (оба параметра обязательны).
