@@ -111,4 +111,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-/env_link_short
