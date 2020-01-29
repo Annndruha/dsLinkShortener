@@ -8,7 +8,6 @@ from db_mngr import Connect, Disconnect, GetLink
 if __name__ == "__main__":
     try:
         load(path = 'config/database.json', name = 'db')
-        print('Load config sucsess!')
     except FileNotFoundError as err:
         print(err)
         print('Making default config')
@@ -26,12 +25,12 @@ if __name__ == "__main__":
 
     try:
         Connect(config['db'])
-        print('Connection db sucsess!')
     except Exception as err:
         print(err)
         exit(2)
     
     http_server = WSGIServer(('0.0.0.0', 80), app) # 0.0.0.0 - localhost
+    print('Server ready to start.\nVisit http://your_domain.com/make/<access_code>')
     http_server.serve_forever()
 
     Disconnect()
