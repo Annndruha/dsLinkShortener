@@ -5,7 +5,7 @@ from db_mngr import GetLink, GetUser, SetLink, linkErrors
 
 @app.route('/')
 def index():
-    return redirect(location = 'https://www.dyakov.space')
+    return redirect(location = 'http://your_domain/')
 
 @app.route('/<alias>', methods=['GET'])
 def goto(alias):
